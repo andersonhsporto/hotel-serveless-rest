@@ -13,7 +13,7 @@ export class GuestsAppStack extends cdk.Stack {
    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
       super(scope, id, props)
 
-      this.guestsDdb = this.newProductTable()
+      this.guestsDdb = this.newGuestTable()
 
       //Guests Layer
       const guestsLayerArn = ssm.StringParameter.valueForStringParameter(this, "GuestsLayerVersionArn")
@@ -32,7 +32,7 @@ export class GuestsAppStack extends cdk.Stack {
                sourceMap: false               
             },            
             environment: {
-               PRODUCTS_DDB: this.guestsDdb.tableName
+               GUESTS_DDB: this.guestsDdb.tableName
             }, 
             layers: [guestsLayer]
          })
@@ -50,14 +50,14 @@ export class GuestsAppStack extends cdk.Stack {
                sourceMap: false               
             },            
             environment: {
-               PRODUCTS_DDB: this.guestsDdb.tableName
+               GUESTS_DDB: this.guestsDdb.tableName
             },
             layers: [guestsLayer]
          }) 
       this.guestsDdb.grantWriteData(this.guestsAdminHandler)
    }
 
-   private newProductTable(): dynamodb.Table {
+   private newGuestTable(): dynamodb.Table {
       return new dynamodb.Table(this, "GuestsDdb", {
          tableName: "guests",
          removalPolicy: cdk.RemovalPolicy.DESTROY,

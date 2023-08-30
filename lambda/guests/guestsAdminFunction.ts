@@ -2,7 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda
 import { DynamoDB } from "aws-sdk"
 import { Guest, GuestRepository } from "./layers/guestsLayer/nodejs/guestRepository";
 
-const guestsDdb = process.env.PRODUCTS_DDB!
+const guestsDdb = process.env.GUESTS_DDB!
 const ddbClient = new DynamoDB.DocumentClient()
 
 const guestRepository = new GuestRepository(ddbClient, guestsDdb)

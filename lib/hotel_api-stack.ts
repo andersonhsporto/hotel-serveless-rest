@@ -41,8 +41,8 @@ export class HotelApiStack extends cdk.Stack {
     guestsResource.addMethod("GET", guestsFetchIntegration);
 
     // GET /guests/{id}
-    const productIdResource = guestsResource.addResource("{id}");
-    productIdResource.addMethod("GET", guestsFetchIntegration);
+    const guestsIdResource = guestsResource.addResource("{id}");
+    guestsIdResource.addMethod("GET", guestsFetchIntegration);
 
     const guestsAdminIntegration = new apigateway.LambdaIntegration(
       props.guestsAdminHandler
@@ -52,9 +52,9 @@ export class HotelApiStack extends cdk.Stack {
     guestsResource.addMethod("POST", guestsAdminIntegration);
 
     // PUT /guests/{id}
-    productIdResource.addMethod("PUT", guestsAdminIntegration);
+    guestsIdResource.addMethod("PUT", guestsAdminIntegration);
 
     // DELETE /guests/{id}
-    productIdResource.addMethod("DELETE", guestsAdminIntegration);
+    guestsIdResource.addMethod("DELETE", guestsAdminIntegration);
   }
 }
