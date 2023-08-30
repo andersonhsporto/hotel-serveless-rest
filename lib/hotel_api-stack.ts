@@ -7,6 +7,8 @@ import { Construct } from "constructs";
 interface HotelApiStackProps extends cdk.StackProps {
   guestsFetchHandler: lambdaNodeJS.NodejsFunction;
   guestsAdminHandler: lambdaNodeJS.NodejsFunction;
+  roomsFetchHandler: lambdaNodeJS.NodejsFunction;
+  roomsAdminHandler: lambdaNodeJS.NodejsFunction;
 }
 
 export class HotelApiStack extends cdk.Stack {
@@ -32,6 +34,10 @@ export class HotelApiStack extends cdk.Stack {
       },
     });
 
+    // ##################################################################################
+    // GUEST
+    // ##################################################################################
+
     const guestsFetchIntegration = new apigateway.LambdaIntegration(
       props.guestsFetchHandler
     );
@@ -42,6 +48,7 @@ export class HotelApiStack extends cdk.Stack {
 
     // GET /guests/{id}
     const guestsIdResource = guestsResource.addResource("{id}");
+
     guestsIdResource.addMethod("GET", guestsFetchIntegration);
 
     const guestsAdminIntegration = new apigateway.LambdaIntegration(
@@ -56,5 +63,33 @@ export class HotelApiStack extends cdk.Stack {
 
     // DELETE /guests/{id}
     guestsIdResource.addMethod("DELETE", guestsAdminIntegration);
+
+    // ##################################################################################
+    // ROOM
+    // ##################################################################################
+
+    const roomsFetchIntegration = new apigateway.LambdaIntegration(
+      props.roomsFetchHandler
+    );
+
+    const roomResource = api.root.addResource("rooms");
+    roomResource.addMethod("GET", roomsFetchIntegration);
+
+    // GET /guests/{id}
+    const roomsIdResource = roomResource.addResource("{id}");
+    roomsIdResource.addMethod("GET", roomsFetchIntegration);
+
+    const roomsAdminIntegration = new apigateway.LambdaIntegration(
+      props.roomsAdminHandler
+    );
+
+    // POST /guests
+    roomResource.addMethod("POST", roomsAdminIntegration);
+
+    // PUT /guests/{id}
+    roomsIdResource.addMethod("PUT", roomsAdminIntegration);
+
+    // DELETE /guests/{id}
+    roomsIdResource.addMethod("DELETE", roomsAdminIntegration);
   }
 }
