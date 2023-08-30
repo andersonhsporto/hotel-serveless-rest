@@ -105,7 +105,8 @@ Some endpoints like POST /guests and PUT /guests/{id} require a json body like t
 * `cdk diff`        compare deployed stack with current state
 * `cdk synth`       emits the synthesized CloudFormation template
 
+
 ## Contact Information
 
-If you have any question, suggestions, or critics, please contact using the [email](mailto:
-anderson.higo2@gmail.com) or through the [LinkedIn](https://www.linkedin.com/in/andersonhsporto/) profile.
+If you have any questions, suggestions, or critiques, please contact me using [email](mailto:anderson.higo2@gmail.com)
+or through [LinkedIn](https://www.linkedin.com/in/andersonhsporto/).
