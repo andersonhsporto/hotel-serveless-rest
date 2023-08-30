@@ -3,10 +3,10 @@ import {
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
-import { RoomRepository } from "./layers/roomsLayer/nodejs/roomRepository"
+import { RoomRepository } from "./layers/roomsLayer/nodejs/roomRepository";
 import { DynamoDB } from "aws-sdk";
 
-const roomDDB = process.env.GUESTS_DDB!;
+const roomDDB = process.env.ROOMS_DDB!;
 const ddbClient = new DynamoDB.DocumentClient();
 
 const roomRepository = new RoomRepository(ddbClient, roomDDB);
@@ -27,7 +27,7 @@ export async function handler(
     if (method === "GET") {
       console.log("GET /rooms");
 
-      const guests = await roomRepository.getAllGuests();
+      const guests = await roomRepository.getAll();
 
       return {
         statusCode: 200,
@@ -39,7 +39,7 @@ export async function handler(
     console.log(`GET /rooms/${guestId}`);
 
     try {
-      const guest = await roomRepository.getGuestById(guestId);
+      const guest = await roomRepository.getById(guestId);
       return {
         statusCode: 200,
         body: JSON.stringify(guest),

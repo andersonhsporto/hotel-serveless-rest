@@ -25,7 +25,10 @@
     "baseUrl": "./",
     "paths": {
       "/opt/nodejs/guestsLayer":[
-        "lambda/guests/layers/guestsLayer/nodejs/guestsRepository"
+        "lambda/guests/layers/guestsLayer/nodejs/guestRepository"
+      ],
+      "/opt/nodejs/roomLayer":[
+        "lambda/rooms/layers/roomsLayer/nodejs/roomRepository"
       ]
     }
   },
