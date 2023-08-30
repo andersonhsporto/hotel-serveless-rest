@@ -51,8 +51,6 @@ this project is heavily inspired in the example developed during the course [AWS
 	```
 2. Deploy the project
 	```bash
-3. Deploy the project
-	```bash
 	cdk deploy --all --require-approval never
 	```
 
