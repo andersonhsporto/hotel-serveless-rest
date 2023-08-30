@@ -2,7 +2,7 @@
 
 ## Description
 
-Rest service for hotel management system, made with AWS CDK and AWS Lambda.
+Rest service for hotel management system, made with AWS CDK and AWS Lambda using typescript and node.js.
 this project is heavily inspired in the example developed during the course [AWS Serverless com NodeJS e AWS CDK](https://siecola.com.br).
 
 ## !! Working in progress
