@@ -53,6 +53,34 @@ export class RoomRepository {
     return data.Item as RoomInterface;
   }
 
+  async getAllCleaned(): Promise<RoomInterface[]> {
+    const data = await this.ddbClient
+      .scan({
+        TableName: this.roomDDB,
+        FilterExpression: "isCleaned = :isCleaned",
+        ExpressionAttributeValues: {
+          ":isCleaned": true,
+        },
+      })
+      .promise();
+
+    return data.Items as RoomInterface[];
+  }
+
+  async getAllDirty(): Promise<RoomInterface[]> {
+    const data = await this.ddbClient
+      .scan({
+        TableName: this.roomDDB,
+        FilterExpression: "isCleaned = :isCleaned",
+        ExpressionAttributeValues: {
+          ":isCleaned": false,
+        },
+      })
+      .promise();
+
+    return data.Items as RoomInterface[];
+  }
+
   async create(dto: RoomDTO): Promise<RoomInterface> {
     const object: RoomInterface = this.toObject(dto);
 
@@ -63,6 +91,44 @@ export class RoomRepository {
       })
       .promise();
 
+    return object;
+  }
+
+  async delete(roomId: string): Promise<RoomInterface> {
+    const data = await this.ddbClient
+      .delete({
+        TableName: this.roomDDB,
+        Key: {
+          id: roomId,
+        },
+        ReturnValues: "ALL_OLD",
+      })
+      .promise();
+
+    if (!data.Attributes) {
+      throw new Error("Room not found");
+    }
+    return data.Attributes as RoomInterface;
+  }
+
+  async update(roomId: string, dto: RoomDTO): Promise<RoomInterface> {
+    const object: RoomInterface = this.toObject(dto);
+
+    await this.ddbClient
+      .update({
+        TableName: this.roomDDB,
+        Key: { id: roomId },
+        UpdateExpression:
+          "SET roomType = :roomType, isFull = :isFull, isCleaned = :isCleaned, description = :description",
+        ExpressionAttributeValues: {
+          ":roomType": object.roomType,
+          ":isFull": object.isFull,
+          ":isCleaned": object.isCleaned,
+          ":description": object.description,
+        },
+      })
+      .promise();
+      
     return object;
   }
 
