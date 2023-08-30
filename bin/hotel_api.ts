@@ -28,7 +28,7 @@ const guestsAppStack = new GuestsAppStack(app, "GuestsApp", {
 })
 guestsAppStack.addDependency(guestsAppLayersStack)
 
-const hotelApiStack = new HotelApiStack(app, "ECommerceApi", {
+const hotelApiStack = new HotelApiStack(app, "HotelApi", {
   guestsFetchHandler: guestsAppStack.guestsFetchHandler,
   guestsAdminHandler: guestsAppStack.guestsAdminHandler,
   tags: tags,
