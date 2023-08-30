@@ -56,15 +56,27 @@ this project is heavily inspired in the example developed during the course [AWS
 
 ## Endpoints
 
+### Guests
+
 - GET /guests - List all guests
 - GET /guests/{id} - Get guest by id
 - POST /guests - Create new guest
 - PUT /guests/{id} - Update guest by id
 - DELETE /guests/{id} - Delete guest by id
 
+### Rooms
+
+- GET /rooms - List all rooms
+- GET /rooms/{id} - Get room by id
+- POST /rooms - Create new room
+- PUT /rooms/{id} - Update room by id
+- DELETE /rooms/{id} - Delete room by id
+
 ### Json Example
 
 Some endpoints like POST /guests and PUT /guests/{id} require a json body like this:
+
+#### Guests
 
 ```json
  {
@@ -78,15 +90,20 @@ Some endpoints like POST /guests and PUT /guests/{id} require a json body like t
   }
 ```
 
+#### Rooms
+
+```json
+{
+  "roomType": "string",
+  "isFull": "bool",
+  "isCleaned": "bool",
+  "description": "string"
+}
+```
+The room type is a string that can be single, double, triple or couple. 
+
+
 ## TODO: Endpoints
-
-### ROOMS
-
-- GET /rooms
-- GET /rooms/{id}
-- POST /rooms
-- PUT /rooms/{id}
-- DELETE /rooms/{id}
 
 ### RESERVATIONS
 
