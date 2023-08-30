@@ -13,13 +13,7 @@ export interface Guest {
 }
 
 export class GuestRepository {
-  private ddbClient: DocumentClient;
-  private guestsDdb: string;
-
-  constructor(ddbClient: DocumentClient, guestsDdb: string) {
-    this.ddbClient = ddbClient;
-    this.guestsDdb = guestsDdb;
-  }
+  constructor(private ddbClient: DocumentClient, private guestsDdb: string) {}
 
   async getAllGuests(): Promise<Guest[]> {
     const data = await this.ddbClient

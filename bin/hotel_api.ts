@@ -2,8 +2,8 @@
 import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { HotelApiStack } from "../lib/hotel_api-stack";
-import { GuestsAppStack } from '../lib/guestsApp-stack';
-import { GuestsAppLayersStack } from '../lib/guestsAppLayers-stack';
+import { GuestsAppStack } from "../lib/guest/guestsApp-stack";
+import { GuestsAppLayersStack } from "../lib/guest/guestsAppLayers-stack";
 
 const app = new cdk.App();
 
@@ -19,19 +19,19 @@ const tags = {
 
 const guestsAppLayersStack = new GuestsAppLayersStack(app, "GuestsAppLayers", {
   tags: tags,
-  env: env
-})
+  env: env,
+});
 
 const guestsAppStack = new GuestsAppStack(app, "GuestsApp", {
   tags: tags,
-  env: env
-})
-guestsAppStack.addDependency(guestsAppLayersStack)
+  env: env,
+});
+guestsAppStack.addDependency(guestsAppLayersStack);
 
 const hotelApiStack = new HotelApiStack(app, "HotelApi", {
   guestsFetchHandler: guestsAppStack.guestsFetchHandler,
   guestsAdminHandler: guestsAppStack.guestsAdminHandler,
   tags: tags,
-  env: env
-})
-hotelApiStack.addDependency(guestsAppStack)
+  env: env,
+});
+hotelApiStack.addDependency(guestsAppStack);

@@ -3,13 +3,13 @@ import {
   APIGatewayProxyResult,
   Context,
 } from "aws-lambda";
-import { GuestRepository } from "./layers/guestsLayer/nodejs/guestRepository";
+import { RoomRepository } from "./layers/roomsLayer/nodejs/roomRepository"
 import { DynamoDB } from "aws-sdk";
 
-const guestsDdb = process.env.GUESTS_DDB!;
+const roomDDB = process.env.GUESTS_DDB!;
 const ddbClient = new DynamoDB.DocumentClient();
 
-const guestRepository = new GuestRepository(ddbClient, guestsDdb);
+const roomRepository = new RoomRepository(ddbClient, roomDDB);
 
 export async function handler(
   event: APIGatewayProxyEvent,
@@ -23,23 +23,23 @@ export async function handler(
   );
 
   const method = event.httpMethod;
-  if (event.resource === "/guests") {
+  if (event.resource === "/rooms") {
     if (method === "GET") {
-      console.log("GET /guests");
+      console.log("GET /rooms");
 
-      const guests = await guestRepository.getAllGuests();
+      const guests = await roomRepository.getAllGuests();
 
       return {
         statusCode: 200,
         body: JSON.stringify(guests),
       };
     }
-  } else if (event.resource === "/guests/{id}") {
+  } else if (event.resource === "/rooms/{id}") {
     const guestId = event.pathParameters!.id as string;
-    console.log(`GET /guests/${guestId}`);
+    console.log(`GET /rooms/${guestId}`);
 
     try {
-      const guest = await guestRepository.getGuestById(guestId);
+      const guest = await roomRepository.getGuestById(guestId);
       return {
         statusCode: 200,
         body: JSON.stringify(guest),
