@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2018",
     "module": "commonjs",
     "lib": [
-      "es2020",
-      "dom"
+      "es2018"
     ],
     "declaration": true,
     "strict": true,
@@ -22,7 +21,13 @@
     "strictPropertyInitialization": false,
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "/opt/nodejs/guestsLayer":[
+        "lambda/guests/layers/guestsLayer/nodejs/guestsRepository"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

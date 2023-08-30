@@ -1,16 +1,60 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as cdk from "aws-cdk-lib";
+import * as lambdaNodeJS from "aws-cdk-lib/aws-lambda-nodejs";
+import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as cwlogs from "aws-cdk-lib/aws-logs";
+import { Construct } from "constructs";
+
+interface HotelApiStackProps extends cdk.StackProps {
+  guestsFetchHandler: lambdaNodeJS.NodejsFunction;
+  guestsAdminHandler: lambdaNodeJS.NodejsFunction;
+}
 
 export class HotelApiStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: HotelApiStackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const logGroup = new cwlogs.LogGroup(this, "HotelApiLogs");
+    const api = new apigateway.RestApi(this, "HotelApi", {
+      restApiName: "HotelApi",
+      deployOptions: {
+        accessLogDestination: new apigateway.LogGroupLogDestination(logGroup),
+        accessLogFormat: apigateway.AccessLogFormat.jsonWithStandardFields({
+          httpMethod: true,
+          ip: true,
+          protocol: true,
+          requestTime: true,
+          resourcePath: true,
+          responseLength: true,
+          status: true,
+          caller: true,
+          user: true,
+        }),
+      },
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'HotelApiQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const guestsFetchIntegration = new apigateway.LambdaIntegration(
+      props.guestsFetchHandler
+    );
+
+    // "/guests"
+    const guestsResource = api.root.addResource("guests");
+    guestsResource.addMethod("GET", guestsFetchIntegration);
+
+    // GET /guests/{id}
+    const productIdResource = guestsResource.addResource("{id}");
+    productIdResource.addMethod("GET", guestsFetchIntegration);
+
+    const guestsAdminIntegration = new apigateway.LambdaIntegration(
+      props.guestsAdminHandler
+    );
+
+    // POST /guests
+    guestsResource.addMethod("POST", guestsAdminIntegration);
+
+    // PUT /guests/{id}
+    productIdResource.addMethod("PUT", guestsAdminIntegration);
+
+    // DELETE /guests/{id}
+    productIdResource.addMethod("DELETE", guestsAdminIntegration);
   }
 }
